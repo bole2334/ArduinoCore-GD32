@@ -2,12 +2,11 @@
     \file    gd32e23x_fmc.h
     \brief   definitions for the FMC
 
-    \version 2019-02-19, V1.0.0, firmware for GD32E23x
-    \version 2020-12-12, V1.1.0, firmware for GD32E23x
+    \version 2025-02-10, V2.3.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -100,7 +99,7 @@ OF SUCH DAMAGE.
 #define FMC_OBSTAT_DATA         BITS(16,31)                 /*!< option byte data bits */
 
 /* FMC_WP */
-#define FMC_WP_WP               BITS(0,15)                  /*!< store WP[15:0] of option byte block after system reset */
+#define FMC_WP_WP               BITS(0,31)                  /*!< store WP[15:0] of option byte block after system reset */
 
 /* FMC_PID */
 #define FMC_PID_PID             BITS(0,31)                  /*!< product ID bits */
@@ -234,7 +233,7 @@ uint32_t option_byte_value_get(uint32_t addr);
 /* erase option byte */
 fmc_state_enum ob_erase(void);
 /* enable option byte write protection (OB_WP) */
-fmc_state_enum ob_write_protection_enable(uint16_t ob_wp);
+fmc_state_enum ob_write_protection_enable(uint32_t ob_wp);
 /* configure read out protect */
 fmc_state_enum ob_security_protection_config(uint16_t ob_spc);
 /* write the FMC option byte user */
@@ -246,7 +245,7 @@ uint8_t ob_user_get(void);
 /* get the FMC option byte OB_DATA */
 uint16_t ob_data_get(void);
 /* get the FMC option byte write protection */
-uint16_t ob_write_protection_get(void);
+uint32_t ob_write_protection_get(void);
 /* get the value of FMC option byte security protection level (PLEVEL) in FMC_OBSTAT register */
 uint32_t ob_obstat_plevel_get(void);
 

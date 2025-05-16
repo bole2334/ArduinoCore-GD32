@@ -2,12 +2,11 @@
     \file    gd32e23x_rcu.h
     \brief   definitions for the RCU
     
-    \version 2019-02-19, V1.0.0, firmware for GD32E23x
-    \version 2020-12-12, V1.1.0, firmware for GD32E23x
+    \version 2025-02-10, V2.3.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     Redistribution and use in source and binary forms, with or without modification, 
 are permitted provided that the following conditions are met:
@@ -42,22 +41,22 @@ OF SUCH DAMAGE.
 #define RCU                         RCU_BASE
 
 /* registers definitions */
-#define RCU_CTL0                    REG32(RCU + 0x00U)        /*!< control register 0 */
-#define RCU_CFG0                    REG32(RCU + 0x04U)        /*!< configuration register 0 */
-#define RCU_INT                     REG32(RCU + 0x08U)        /*!< interrupt register */
-#define RCU_APB2RST                 REG32(RCU + 0x0CU)        /*!< APB2 reset register */
-#define RCU_APB1RST                 REG32(RCU + 0x10U)        /*!< APB1 reset register */
-#define RCU_AHBEN                   REG32(RCU + 0x14U)        /*!< AHB enable register */
-#define RCU_APB2EN                  REG32(RCU + 0x18U)        /*!< APB2 enable register */
-#define RCU_APB1EN                  REG32(RCU + 0x1CU)        /*!< APB1 enable register  */
-#define RCU_BDCTL                   REG32(RCU + 0x20U)        /*!< backup domain control register */
-#define RCU_RSTSCK                  REG32(RCU + 0x24U)        /*!< reset source /clock register */
-#define RCU_AHBRST                  REG32(RCU + 0x28U)        /*!< AHB reset register */
-#define RCU_CFG1                    REG32(RCU + 0x2CU)        /*!< configuration register 1 */
-#define RCU_CFG2                    REG32(RCU + 0x30U)        /*!< configuration register 2 */
-#define RCU_CTL1                    REG32(RCU + 0x34U)        /*!< control register 1 */
-#define RCU_VKEY                    REG32(RCU + 0x100U)       /*!< voltage key register */
-#define RCU_DSV                     REG32(RCU + 0x134U)       /*!< deep-sleep mode voltage register */
+#define RCU_CTL0                    REG32(RCU + 0x00000000U)        /*!< control register 0 */
+#define RCU_CFG0                    REG32(RCU + 0x00000004U)        /*!< configuration register 0 */
+#define RCU_INT                     REG32(RCU + 0x00000008U)        /*!< interrupt register */
+#define RCU_APB2RST                 REG32(RCU + 0x0000000CU)        /*!< APB2 reset register */
+#define RCU_APB1RST                 REG32(RCU + 0x00000010U)        /*!< APB1 reset register */
+#define RCU_AHBEN                   REG32(RCU + 0x00000014U)        /*!< AHB enable register */
+#define RCU_APB2EN                  REG32(RCU + 0x00000018U)        /*!< APB2 enable register */
+#define RCU_APB1EN                  REG32(RCU + 0x0000001CU)        /*!< APB1 enable register  */
+#define RCU_BDCTL                   REG32(RCU + 0x00000020U)        /*!< backup domain control register */
+#define RCU_RSTSCK                  REG32(RCU + 0x00000024U)        /*!< reset source /clock register */
+#define RCU_AHBRST                  REG32(RCU + 0x00000028U)        /*!< AHB reset register */
+#define RCU_CFG1                    REG32(RCU + 0x0000002CU)        /*!< configuration register 1 */
+#define RCU_CFG2                    REG32(RCU + 0x00000030U)        /*!< configuration register 2 */
+#define RCU_CTL1                    REG32(RCU + 0x00000034U)        /*!< control register 1 */
+#define RCU_VKEY                    REG32(RCU + 0x00000100U)        /*!< voltage key register */
+#define RCU_DSV                     REG32(RCU + 0x00000134U)        /*!< deep-sleep mode voltage register */
 
 /* bits definitions */
 /* RCU_CTL0 */
@@ -628,19 +627,6 @@ void rcu_hxtal_prediv_config(uint32_t hxtal_prediv);
 /* configure the LXTAL drive capability */
 void rcu_lxtal_drive_capability_config(uint32_t lxtal_dricap);
 
-/* get the clock stabilization and periphral reset flags */
-FlagStatus rcu_flag_get(rcu_flag_enum flag);
-/* clear the reset flag */
-void rcu_all_reset_flag_clear(void);
-/* get the clock stabilization interrupt and ckm flags */
-FlagStatus rcu_interrupt_flag_get(rcu_int_flag_enum int_flag);
-/* clear the interrupt flags */
-void rcu_interrupt_flag_clear(rcu_int_flag_clear_enum int_flag_clear);
-/* enable the stabilization interrupt */
-void rcu_interrupt_enable(rcu_int_enum stab_int);
-/* disable the stabilization interrupt */
-void rcu_interrupt_disable(rcu_int_enum stab_int);
-
 /* wait until oscillator stabilization flags is SET */
 ErrStatus rcu_osci_stab_wait(rcu_osci_type_enum osci);
 /* turn on the oscillator */
@@ -667,5 +653,18 @@ void rcu_deepsleep_voltage_set(uint32_t dsvol);
 
 /* get the system clock, bus and peripheral clock frequency */
 uint32_t rcu_clock_freq_get(rcu_clock_freq_enum clock);
+
+/* get the clock stabilization and periphral reset flags */
+FlagStatus rcu_flag_get(rcu_flag_enum flag);
+/* clear the reset flag */
+void rcu_all_reset_flag_clear(void);
+/* get the clock stabilization interrupt and ckm flags */
+FlagStatus rcu_interrupt_flag_get(rcu_int_flag_enum int_flag);
+/* clear the interrupt flags */
+void rcu_interrupt_flag_clear(rcu_int_flag_clear_enum int_flag_clear);
+/* enable the stabilization interrupt */
+void rcu_interrupt_enable(rcu_int_enum stab_int);
+/* disable the stabilization interrupt */
+void rcu_interrupt_disable(rcu_int_enum stab_int);
 
 #endif /* GD32E23X_RCU_H */

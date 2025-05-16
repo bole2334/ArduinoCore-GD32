@@ -2,36 +2,38 @@
     \file    gd32e23x.h
     \brief   general definitions for GD32E23x
 
-    \version 2019-02-19, V1.0.0, firmware for GD32E23x
-    \version 2020-12-12, V1.1.0, firmware for GD32E23x
+    \version 2025-02-10, V2.3.0, firmware for GD32E23x
 */
 
-/*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+/* Copyright (c) 2012 ARM LIMITED
+   Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
-    Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+   All rights reserved.
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+   - Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+   - Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution.
+   - Neither the name of ARM nor the names of its contributors may be used
+     to endorse or promote products derived from this software without
+     specific prior written permission.
+   *
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+   ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+   POSSIBILITY OF SUCH DAMAGE.
+   ---------------------------------------------------------------------------*/
 
-    1. Redistributions of source code must retain the above copyright notice, this
-       list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice,
-       this list of conditions and the following disclaimer in the documentation
-       and/or other materials provided with the distribution.
-    3. Neither the name of the copyright holder nor the names of its contributors
-       may be used to endorse or promote products derived from this software without
-       specific prior written permission.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
-OF SUCH DAMAGE.
-*/
+/* This file refers the CMSIS standard, some adjustments are made according to GigaDevice chips */
 
 #ifndef GD32E23X_H
 #define GD32E23X_H
@@ -47,14 +49,6 @@ OF SUCH DAMAGE.
 #if !defined (GD32E23x)
  #error "Please select the target GD32E23x device used in your application (in gd32e23x.h file)"
 #endif /* undefine GD32E23x tip */
-
-/* define GD32E23x device category */
-#if (!defined (GD32E230))&&(!defined (GD32E231))
- #error "Please select GD32E23x device category( GD32E230 or GD32E231 )"
-#endif /* undefine GD32E230 or GD32E231 tip */
-#if (defined (GD32E230))&&(defined (GD32E231))
- #error "Please select one GD32E23x device category( GD32E230 or GD32E231 )"
-#endif /* define GD32E230 and GD32E231 tip */
 
 /* define value of high speed crystal oscillator (HXTAL) in Hz */
 #if !defined  (HXTAL_VALUE)
@@ -96,8 +90,8 @@ OF SUCH DAMAGE.
 #endif /* low speed crystal oscillator value */
 
 /* GD32E23x firmware library version number V1.0 */
-#define __GD32E23x_STDPERIPH_VERSION_MAIN   (0x01) /*!< [31:24] main version     */
-#define __GD32E23x_STDPERIPH_VERSION_SUB1   (0x00) /*!< [23:16] sub1 version     */
+#define __GD32E23x_STDPERIPH_VERSION_MAIN   (0x02) /*!< [31:24] main version     */
+#define __GD32E23x_STDPERIPH_VERSION_SUB1   (0x03) /*!< [23:16] sub1 version     */
 #define __GD32E23x_STDPERIPH_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version     */
 #define __GD32E23x_STDPERIPH_VERSION_RC     (0x00) /*!< [7:0]  release candidate */
 #define __GD32E23x_STDPERIPH_VERSION        ((__GD32E23x_STDPERIPH_VERSION_MAIN << 24)\

@@ -1,37 +1,38 @@
 ;/*!
-;    \file    startup_gd32e230.s
+;    \file    startup_gd32e23x.s
 ;    \brief   start up file
 ;
-;    \version 2018-06-19, V1.0.0, firmware for GD32E230
-;    \version 2020-12-12, V1.1.0, firmware for GD32E23x
+;    \version 2025-02-10, V2.3.0, firmware for GD32E23x
 ;*/
 
-;/*
-;    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+;/*  Copyright (c) 2012 ARM LIMITED
+;    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 ;
-;    Redistribution and use in source and binary forms, with or without modification, 
-;are permitted provided that the following conditions are met:
-;
-;    1. Redistributions of source code must retain the above copyright notice, this 
-;       list of conditions and the following disclaimer.
-;    2. Redistributions in binary form must reproduce the above copyright notice, 
-;       this list of conditions and the following disclaimer in the documentation 
-;       and/or other materials provided with the distribution.
-;    3. Neither the name of the copyright holder nor the names of its contributors 
-;       may be used to endorse or promote products derived from this software without 
-;       specific prior written permission.
-;
-;    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-;AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-;WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-;IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-;INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-;NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-;PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-;WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-;ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
-;OF SUCH DAMAGE.
+;   All rights reserved.
+;   Redistribution and use in source and binary forms, with or without
+;   modification, are permitted provided that the following conditions are met:
+;   - Redistributions of source code must retain the above copyright
+;     notice, this list of conditions and the following disclaimer.
+;   - Redistributions in binary form must reproduce the above copyright
+;     notice, this list of conditions and the following disclaimer in the
+;     documentation and/or other materials provided with the distribution.
+;   - Neither the name of ARM nor the names of its contributors may be used
+;     to endorse or promote products derived from this software without
+;     specific prior written permission.
+;   *
+;   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+;   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+;   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+;   ARE DISCLAIMED. IN NO EVENT SHALL COPYRIGHT HOLDERS AND CONTRIBUTORS BE
+;   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+;   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+;   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+;   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+;   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+;   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+;   POSSIBILITY OF SUCH DAMAGE.
 ;*/
+;/* This file refers the CMSIS standard, some adjustments are made according to GigaDevice chips */
 
         MODULE  ?cstartup
 
@@ -110,6 +111,19 @@ __vector_table
         PUBWEAK Reset_Handler
         SECTION .text:CODE:NOROOT:REORDER(2)
 Reset_Handler
+                LDR     R0, =0x1FFFF7E0
+                LDR     R2, [R0]
+                LDR     R0, = 0xFFFF0000
+                ANDS    R2, R2, R0
+                LSRS    R2, R2, #16
+                LSLS    R2, R2, #10
+                LDR     R1, =0x20000000
+                MOV     R0, #0x00
+SRAM_INIT       STM     R1!, {R0}
+                SUBS    R2, R2, #4
+                CMP     R2, #0x00
+                BNE     SRAM_INIT
+                
         LDR     R0, =SystemInit
         BLX     R0
         LDR     R0, =__iar_program_start

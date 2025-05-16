@@ -1,46 +1,40 @@
 /*!
     \file    gd32e23x_wwdgt.c
     \brief   WWDGT driver
-    
-    \version 2019-02-19, V1.0.0, firmware for GD32E23x
-    \version 2020-12-12, V1.1.0, firmware for GD32E23x
+
+    \version 2025-02-10, V2.3.0, firmware for GD32E23x
 */
 
 /*
-    Copyright (c) 2020, GigaDevice Semiconductor Inc.
+    Copyright (c) 2025, GigaDevice Semiconductor Inc.
 
     All rights reserved.
 
-    Redistribution and use in source and binary forms, with or without modification, 
+    Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
-    1. Redistributions of source code must retain the above copyright notice, this 
+    1. Redistributions of source code must retain the above copyright notice, this
        list of conditions and the following disclaimer.
-    2. Redistributions in binary form must reproduce the above copyright notice, 
-       this list of conditions and the following disclaimer in the documentation 
+    2. Redistributions in binary form must reproduce the above copyright notice,
+       this list of conditions and the following disclaimer in the documentation
        and/or other materials provided with the distribution.
-    3. Neither the name of the copyright holder nor the names of its contributors 
-       may be used to endorse or promote products derived from this software without 
+    3. Neither the name of the copyright holder nor the names of its contributors
+       may be used to endorse or promote products derived from this software without
        specific prior written permission.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
-IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT 
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
-PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY 
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
 
 #include "gd32e23x_wwdgt.h"
-
-/* WWDGT_CTL register value */
-#define CTL_CNT(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))    /*!< write value to WWDGT_CTL_CNT bit field */
-/* WWDGT_CFG register value */
-#define CFG_WIN(regval)             (BITS(0,6) & ((uint32_t)(regval) << 0U))    /*!< write value to WWDGT_CFG_WIN bit field */
 
 /*!
     \brief      reset the window watchdog timer configuration
@@ -73,16 +67,11 @@ void wwdgt_enable(void)
 */
 void wwdgt_counter_update(uint16_t counter_value)
 {
-    uint32_t reg = 0x00000000U;
-    
-    reg = WWDGT_CTL &(~(uint32_t)WWDGT_CTL_CNT);
-    reg |= (uint32_t)(CTL_CNT(counter_value));
-    
-    WWDGT_CTL = (uint32_t)reg;
+    WWDGT_CTL = (uint32_t)(CTL_CNT(counter_value));
 }
 
 /*!
-    \brief      configure counter value, window value, and prescaler divider value  
+    \brief      configure counter value, window value, and prescaler divider value
     \param[in]  counter: 0x00000000 - 0x0000007F
     \param[in]  window: 0x00000000 - 0x0000007F
     \param[in]  prescaler: wwdgt prescaler value
@@ -96,30 +85,8 @@ void wwdgt_counter_update(uint16_t counter_value)
 */
 void wwdgt_config(uint16_t counter, uint16_t window, uint32_t prescaler)
 {
-    uint32_t reg_cfg = 0x00000000U, reg_ctl = 0x00000000U;
-
-    /* clear WIN and PSC bits, clear CNT bit */
-    reg_cfg = WWDGT_CFG &(~((uint32_t)WWDGT_CFG_WIN|(uint32_t)WWDGT_CFG_PSC));
-    reg_ctl = WWDGT_CTL &(~(uint32_t)WWDGT_CTL_CNT);
-  
-    /* configure WIN and PSC bits, configure CNT bit */
-    reg_cfg |= (uint32_t)(CFG_WIN(window));
-    reg_cfg |= (uint32_t)(prescaler);
-    reg_ctl |= (uint32_t)(CTL_CNT(counter));
-    
-    WWDGT_CFG = (uint32_t)reg_cfg;
-    WWDGT_CTL = (uint32_t)reg_ctl;
-}
-
-/*!
-    \brief      enable early wakeup interrupt of WWDGT
-    \param[in]  none
-    \param[out] none
-    \retval     none
-*/
-void wwdgt_interrupt_enable(void)
-{
-    WWDGT_CFG |= WWDGT_CFG_EWIE;
+    WWDGT_CFG = (uint32_t)(CFG_WIN(window) | prescaler);
+    WWDGT_CTL = (uint32_t)(CTL_CNT(counter));
 }
 
 /*!
@@ -130,9 +97,9 @@ void wwdgt_interrupt_enable(void)
 */
 FlagStatus wwdgt_flag_get(void)
 {
-  if(RESET != (WWDGT_STAT & WWDGT_STAT_EWIF)){
+    if(RESET != (WWDGT_STAT & WWDGT_STAT_EWIF)) {
         return SET;
-  }
+    }
     return RESET;
 }
 
@@ -144,5 +111,16 @@ FlagStatus wwdgt_flag_get(void)
 */
 void wwdgt_flag_clear(void)
 {
-    WWDGT_STAT &= (uint32_t)(~(uint32_t)WWDGT_STAT_EWIF);
+    WWDGT_STAT &= (~(uint32_t)WWDGT_STAT_EWIF);
+}
+
+/*!
+    \brief      enable early wakeup interrupt of WWDGT
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void wwdgt_interrupt_enable(void)
+{
+    WWDGT_CFG |= WWDGT_CFG_EWIE;
 }
